@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static edu.neu.coe.info6205.sort.huskySort.HuskySortBenchmark.runStringSortBenchmark;
@@ -223,6 +224,24 @@ public class QuickSortDualPivotTest {
         String[] xs = helper.random(String.class, r -> words[r.nextInt(n)]);
         SortWithHelper<String> sorter = new QuickSort_DualPivot<>(helper);
         runStringSortBenchmark(xs, n, 1, sorter, timeLoggersLinearithmic);
+    }
+
+    @Test
+    public void testSortWithChinese() throws Exception {
+        String[] xs = new String[]{"刘持平", "洪文胜", "樊辉辉", "苏会敏", "高民政", "曹玉德", "袁继鹏",
+                "舒冬梅", "杨腊香", "许凤山", "王广风", "黄锡鸿", "罗庆富", "顾芳芳", "宋雪光", "张三", "张四","张安"};
+        int n = xs.length;
+        final CollatorHelper<String> helper = new CollatorHelper<String>("test");
+        QuickSort_DualPivot<String> sorter = new QuickSort_DualPivot<>(helper);
+        Partitioner<String> partitioner = sorter.createPartitioner();
+        List<Partition<String>> partitions = partitioner.partition(new Partition<>(xs, 0, xs.length));
+        Partition<String> p0 = partitions.get(0);
+        sorter.sort(xs, 0, p0.to, 0);
+        Partition<String> p1 = partitions.get(1);
+        sorter.sort(xs, p1.from, p1.to, 0);
+        Partition<String> p2 = partitions.get(2);
+        sorter.sort(xs, p2.from, n, 0);
+        System.out.println(Arrays.asList(xs));
     }
 
     private static String[] setupWords(final int n) {

@@ -1,6 +1,10 @@
 package edu.neu.coe.info6205.sort.counting;
 
+import com.ibm.icu.text.CollationKey;
+import com.ibm.icu.text.Collator;
 import edu.neu.coe.info6205.sort.simple.InsertionSortMSD;
+
+import java.util.Locale;
 
 /**
  * Class to implement Most significant digit string sort (a radix sort).
@@ -41,6 +45,8 @@ public class MSDStringSort {
             if (hi - lo >= 0) System.arraycopy(aux, 0, a, lo, hi - lo);
             // Recursively sort for each character value.
             // TO BE IMPLEMENTED
+            for (int r = 0; r < radix; r++)
+                sort(a, lo + count[r], lo + count[r + 1] - 1, d + 1);
         }
     }
 
@@ -52,4 +58,14 @@ public class MSDStringSort {
     private static final int radix = 256;
     private static final int cutoff = 15;
     private static String[] aux;       // auxiliary array for distribution
+
+//    public static void main(String[] args) {
+//        String[] xs = new String[]{"刘持平", "洪文胜", "樊辉辉", "苏会敏", "高民政", "曹玉德", "袁继鹏",
+//                "舒冬梅", "杨腊香", "许凤山", "王广风", "黄锡鸿", "罗庆富", "顾芳芳", "宋雪光", "张三", "张四","张安"};
+//        Collator collator = Collator.getInstance(Locale.CHINA);
+//        CollationKey[] collationKeys = new CollationKey[xs.length];
+//        for (int i = 0; i < xs.length; i++) {
+//            collationKeys[i] = collator.getCollationKey(xs[i]);
+//        }
+//    }
 }
