@@ -339,9 +339,8 @@ public final class HuskyCoderFactory {
         } else return -1;
     }
 
-    private static long chineseStringToLong(Collator collator, final String str, final int maxLength, final int bitWidth,final int mask) {
+    private static long chineseStringToLong(Collator collator, final String str, final int maxLength) {
         final int length = Math.min(str.length(), maxLength);
-        final int padding = maxLength - length;
         long result = 0L;
         StringBuilder temp =new StringBuilder();
         for (int i = 0; i < length; i++) {
@@ -359,7 +358,7 @@ public final class HuskyCoderFactory {
 
     private static long unicodeChineseToLong(Collator collator, final String str) {
 
-        return chineseStringToLong(collator,str, 3, BIT_WIDTH_UNICODE,MASK_UNICODE);
+        return chineseStringToLong(collator,str, 3);
         // CONSIDER an alternative coding scheme which would use str.getBytes(Charset.forName("UTF-16"));
         // ignore the first two bytes and take the next eight bytes (or however many there are) and then pack them byte by byte into the long.
 //        int startingPos = 2; // We need to account for the BOM
@@ -379,16 +378,9 @@ public final class HuskyCoderFactory {
         final int padding = maxLength - length;
         long result = 0L;
         if (((mask ^ MASK_SHORT) & MASK_SHORT) == 0)
-            for (int i = 0; i < length; i++) {
-                System.out.print(" "+str.charAt(i));
-                result = result << bitWidth | str.charAt(i);
-                System.out.print(result);
-            }
+            for (int i = 0; i < length; i++) result = result << bitWidth | str.charAt(i);
         else
-            for (int i = 0; i < length; i++) {
-                System.out.print(" "+str.charAt(i));
-                result = result << bitWidth | str.charAt(i) & mask;
-            }
+            for (int i = 0; i < length; i++) result = result << bitWidth | str.charAt(i) & mask;
         result = result << bitWidth * padding;
 
         return result;

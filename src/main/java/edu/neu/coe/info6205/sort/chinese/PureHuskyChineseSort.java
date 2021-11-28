@@ -32,7 +32,6 @@ public class PureHuskyChineseSort<X extends Comparable<X>> {
         final Coding coding = huskyCoder.huskyEncode(xs);
         final long[] longs = coding.longs;
         for(long a:longs)
-            System.out.print(" "+a);
         introSort(xs, longs, 0, longs.length, 2 * floor_lg(xs.length));
 
         // NOTE: Second pass (if required) to fix any remaining inversions.
