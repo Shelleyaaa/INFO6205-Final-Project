@@ -23,7 +23,8 @@ public class PureHuskyChineseSort<X extends Comparable<X>> {
      *
      * @param xs the array to be sorted.
      */
-    public void sort(final X[] xs) {
+    public X[] sort(final X[] arr) {
+        X[] xs = preProcess(arr);
         // NOTE: we start with a random shuffle
         // This is necessary if we might be sorting a pre-sorted array. Otherwise, we usually don't need it.
         if (mayBeSorted) Collections.shuffle(Arrays.asList(xs));
@@ -35,8 +36,10 @@ public class PureHuskyChineseSort<X extends Comparable<X>> {
         introSort(xs, longs, 0, longs.length, 2 * floor_lg(xs.length));
 
         // NOTE: Second pass (if required) to fix any remaining inversions.
-        if (coding.perfect)
-            return;
+        if (coding.perfect) {
+            postProcess(arr);
+            return xs;
+        }
         if (useInsertionSort)
             new InsertionSort<X>(helper).mutatingSort(xs);
         else{
@@ -48,8 +51,16 @@ public class PureHuskyChineseSort<X extends Comparable<X>> {
                 }
             });
         }
+        postProcess(arr);
+        return xs;
     }
 
+    public  X[] preProcess(X[] xs){
+        return Arrays.copyOf(xs,xs.length);
+    }
+    public  X[] postProcess(X[] xs){
+        return xs;
+    }
     /**
      * Primary constructor.
      *

@@ -26,8 +26,8 @@ public class PureHuskyChineseSortTest {
     @Test
     public void testSortString() {
         PureHuskyChineseSort<String> sorter = new PureHuskyChineseSort<>(HuskyCoderFactory.unicodeChineseCoder, false, false);
-        sorter.sort(input);
-        assertArrayEquals(expected, input);
+        String[] result = sorter.sort(input);
+        assertArrayEquals(expected, result);
     }
 
     @Test
@@ -35,8 +35,8 @@ public class PureHuskyChineseSortTest {
         PureHuskyChineseSort<String> sorter = new PureHuskyChineseSort<>(HuskyCoderFactory.unicodeChineseCoder, false, false);
         String[] chinese = new String[]{"张安安", "张安三", "张安安安","张安安三","张三","张四","张安"};
         String[] after = new String[]{"张安" ,"张安安", "张安安安" ,"张安安三", "张安三", "张三" ,"张四"};
-        sorter.sort(chinese);
-        assertArrayEquals(after, chinese);
+        String[] result =sorter.sort(chinese);
+        assertArrayEquals(after, result);
     }
 
     @Test
@@ -48,9 +48,9 @@ public class PureHuskyChineseSortTest {
         final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
         assertEquals(n, xs.length);
         PureHuskyChineseSort<String> sorter = new PureHuskyChineseSort<>(HuskyCoderFactory.unicodeChineseCoder, false, true);
-        sorter.sort(xs);
-        assertEquals("曹玉德", xs[0]);
-        assertEquals("袁继鹏", xs[160]);
+        String[] result =sorter.sort(xs);
+        assertEquals("曹玉德", result[0]);
+        assertEquals("袁继鹏", result[160]);
     }
 
     @Test
@@ -62,9 +62,9 @@ public class PureHuskyChineseSortTest {
         final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
         assertEquals(n, xs.length);
         PureHuskyChineseSort<String> sorter = new PureHuskyChineseSort<>(HuskyCoderFactory.unicodeChineseCoder, false, true);
-        sorter.sort(xs);
-        assertEquals("曹玉德", xs[0]);
-        assertEquals("张四", xs[199]);
+        String[] result = sorter.sort(xs);
+        assertEquals("曹玉德", result[0]);
+        assertEquals("张四", result[199]);
     }
 
     /**
