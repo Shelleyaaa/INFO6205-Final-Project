@@ -3,6 +3,10 @@
  */
 package edu.neu.coe.info6205.sort.huskySortUtils;
 
+import com.ibm.icu.text.Collator;
+import com.ibm.icu.text.DecimalFormat;
+import com.ibm.icu.util.ULocale;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.LongBuffer;
@@ -116,6 +120,20 @@ public final class HuskyCoderFactory {
          */
         public long huskyEncode(final String str) {
             return unicodeToLong(str);
+        }
+    };
+    public final static HuskySequenceCoder<String> unicodeChineseCoder = new BaseHuskySequenceCoder<String>("Unicode", MAX_LENGTH_UNICODE - 1) {
+        /**
+         * Encode x as a long.
+         * As much as possible, if x > y, huskyEncode(x) > huskyEncode(y).
+         * If this cannot be guaranteed, then the result of imperfect(z) will be true.
+         *
+         * @param str the X value to encode.
+         * @return a long which is, as closely as possible, monotonically increasing with the domain of X values.
+         */
+        public long huskyEncode(final String str) {
+            Collator collator = Collator.getInstance(ULocale.CHINA);
+            return     unicodeChineseToLong(collator,str);
         }
     };
 
@@ -309,6 +327,44 @@ public final class HuskyCoderFactory {
         return longArrayToLong(toUTF8Array(str), MAX_LENGTH_UTF8, BIT_WIDTH_UTF8, MASK_UTF8) >>> 1;
     }
 
+
+    private static int ChineseCharAt(Collator collator, String s, int d) {
+        if (d < s.length()) {
+            byte[] bytes = collator.getCollationKey(String.valueOf(s.charAt(d))).toByteArray();
+            if (bytes.length < 7) {
+                return (bytes[0] & 0xFF) * 255;
+            } else {
+                return (bytes[0] & 0xFF) * 255 + (bytes[1] & 0xFF);
+            }
+        } else return -1;
+    }
+
+    private static long chineseStringToLong(Collator collator, final String str, final int maxLength) {
+        final int length = Math.min(str.length(), maxLength);
+        long result = 0L;
+        StringBuilder temp =new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            result = ChineseCharAt(collator, str, i);
+            String s =String.format("%05d", result);
+            temp.append(s);
+        }
+        if(length<maxLength){
+            for (int i = 0;i<maxLength-length;i++)
+                temp.append("00000");
+        }
+        result = Long.parseLong(temp.toString());
+        return result;
+    }
+
+    private static long unicodeChineseToLong(Collator collator, final String str) {
+
+        return chineseStringToLong(collator,str, 3);
+        // CONSIDER an alternative coding scheme which would use str.getBytes(Charset.forName("UTF-16"));
+        // ignore the first two bytes and take the next eight bytes (or however many there are) and then pack them byte by byte into the long.
+//        int startingPos = 2; // We need to account for the BOM
+//        return stringToBytesToLong(str, MAX_LENGTH_UNICODE, StandardCharsets.UTF_16, startingPos) >>> 1;
+    }
+
     private static long unicodeToLong(final String str) {
         return stringToLong(str, MAX_LENGTH_UNICODE, BIT_WIDTH_UNICODE, MASK_UNICODE) >>> 1;
         // CONSIDER an alternative coding scheme which would use str.getBytes(Charset.forName("UTF-16"));
@@ -326,6 +382,7 @@ public final class HuskyCoderFactory {
         else
             for (int i = 0; i < length; i++) result = result << bitWidth | str.charAt(i) & mask;
         result = result << bitWidth * padding;
+
         return result;
     }
 
