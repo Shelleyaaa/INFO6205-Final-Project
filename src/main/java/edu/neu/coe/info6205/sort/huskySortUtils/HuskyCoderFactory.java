@@ -4,7 +4,6 @@
 package edu.neu.coe.info6205.sort.huskySortUtils;
 
 import com.ibm.icu.text.Collator;
-import com.ibm.icu.text.DecimalFormat;
 import com.ibm.icu.util.ULocale;
 
 import java.math.BigDecimal;
@@ -339,26 +338,21 @@ public final class HuskyCoderFactory {
         } else return -1;
     }
 
-    private static long chineseStringToLong(Collator collator, final String str, final int maxLength) {
+    private static long chineseStringToLong(Collator collator,final String str, final int maxLength, final int bitWidth, final int mask) {
         final int length = Math.min(str.length(), maxLength);
+        final int padding = maxLength - length;
         long result = 0L;
-        StringBuilder temp =new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            result = ChineseCharAt(collator, str, i);
-            String s =String.format("%05d", result);
-            temp.append(s);
-        }
-        if(length<maxLength){
-            for (int i = 0;i<maxLength-length;i++)
-                temp.append("00000");
-        }
-        result = Long.parseLong(temp.toString());
+        if (((mask ^ MASK_SHORT) & MASK_SHORT) == 0)
+            for (int i = 0; i < length; i++) result = result << bitWidth | ChineseCharAt(collator,str,i);
+        else
+            for (int i = 0; i < length; i++) result = result << bitWidth | ChineseCharAt(collator,str,i) & mask;
+        result = result << bitWidth * padding;
+
         return result;
     }
 
     private static long unicodeChineseToLong(Collator collator, final String str) {
-
-        return chineseStringToLong(collator,str, 3);
+        return chineseStringToLong(collator,str, MAX_LENGTH_UNICODE, BIT_WIDTH_UNICODE, MASK_UNICODE) >>> 1;
         // CONSIDER an alternative coding scheme which would use str.getBytes(Charset.forName("UTF-16"));
         // ignore the first two bytes and take the next eight bytes (or however many there are) and then pack them byte by byte into the long.
 //        int startingPos = 2; // We need to account for the BOM
