@@ -2,13 +2,11 @@ package edu.neu.coe.info6205.sort.chinese;
 
 import edu.neu.coe.info6205.sort.BaseHelper;
 import edu.neu.coe.info6205.sort.Helper;
-import edu.neu.coe.info6205.sort.counting.MSDStringSort;
 import org.junit.Test;
 
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,9 +35,16 @@ public class MSDChineseSortTest {
         String[] words = getWords("chinese-words-test.txt", MSDChineseSortTest::lineAsList);
         final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
         assertEquals(n, xs.length);
-        MSDStringSort.sort(xs);
+        MSDChineseSort.sort(xs);
         assertEquals("曹玉德", xs[0]);
         assertEquals("张四", xs[199]);
+    }
+
+    @Test
+    public void sort2() {
+        String[] words = getWords("shuffledChinese.txt", MSDChineseSortTest::lineAsList);
+        MSDChineseSort.sort(words);
+        assertEquals("阿安", words[0]);
     }
 
     /**

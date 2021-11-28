@@ -128,7 +128,8 @@ public class CollatorHelper<X extends Comparable<X>> implements Helper<X> {
      * @return false as soon as an inversion is found; otherwise return true.
      */
     public boolean sorted(X[] xs) {
-        return Utilities.isSorted(xs);
+        for (int i = 1; i < xs.length; i++) if (collator.compare(xs[i - 1], xs[i]) > 0) return false;
+        return true;
     }
 
     /**
@@ -141,7 +142,7 @@ public class CollatorHelper<X extends Comparable<X>> implements Helper<X> {
         int result = 0;
         for (int i = 0; i < xs.length; i++)
             for (int j = i + 1; j < xs.length; j++)
-                if (xs[i].compareTo(xs[j]) > 0) result++;
+                if (collator.compare(xs[i], xs[j]) > 0) result++;
         return result;
     }
 
@@ -226,27 +227,6 @@ public class CollatorHelper<X extends Comparable<X>> implements Helper<X> {
      */
     public CollatorHelper(String description) {
         this(description, 0);
-    }
-
-    public static final String INSTRUMENT = "instrument";
-
-    public static class HelperException extends RuntimeException {
-
-        public HelperException(String message) {
-            super(message);
-        }
-
-        public HelperException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-        public HelperException(Throwable cause) {
-            super(cause);
-        }
-
-        public HelperException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-            super(message, cause, enableSuppression, writableStackTrace);
-        }
     }
 
     protected final String description;

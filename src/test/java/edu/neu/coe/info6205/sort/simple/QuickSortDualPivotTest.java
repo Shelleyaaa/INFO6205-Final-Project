@@ -3,10 +3,6 @@ package edu.neu.coe.info6205.sort.simple;/*
  */
 
 import edu.neu.coe.info6205.sort.*;
-import edu.neu.coe.info6205.sort.simple.Partition;
-import edu.neu.coe.info6205.sort.simple.Partitioner;
-import edu.neu.coe.info6205.sort.simple.QuickSort;
-import edu.neu.coe.info6205.sort.simple.QuickSort_DualPivot;
 import edu.neu.coe.info6205.util.Config;
 import edu.neu.coe.info6205.util.ConfigTest;
 import edu.neu.coe.info6205.util.PrivateMethodInvoker;
@@ -227,9 +223,9 @@ public class QuickSortDualPivotTest {
     }
 
     @Test
-    public void testSortWithChinese() throws Exception {
+    public void testSortWithChinesePartition() throws Exception {
         String[] xs = new String[]{"刘持平", "洪文胜", "樊辉辉", "苏会敏", "高民政", "曹玉德", "袁继鹏",
-                "舒冬梅", "杨腊香", "许凤山", "王广风", "黄锡鸿", "罗庆富", "顾芳芳", "宋雪光", "张三", "张四","张安"};
+                "舒冬梅", "杨腊香", "许凤山", "王广风", "黄锡鸿", "罗庆富", "顾芳芳", "宋雪光", "张三", "张四", "张安"};
         int n = xs.length;
         final CollatorHelper<String> helper = new CollatorHelper<String>("test");
         QuickSort_DualPivot<String> sorter = new QuickSort_DualPivot<>(helper);
@@ -242,6 +238,17 @@ public class QuickSortDualPivotTest {
         Partition<String> p2 = partitions.get(2);
         sorter.sort(xs, p2.from, n, 0);
         System.out.println(Arrays.asList(xs));
+    }
+
+    @Test
+    public void testSortWithChinese() throws Exception {
+        String[] xs = new String[]{"刘持平", "洪文胜", "樊辉辉", "苏会敏", "高民政", "曹玉德", "袁继鹏",
+                "舒冬梅", "杨腊香", "许凤山", "王广风", "黄锡鸿", "罗庆富", "顾芳芳", "宋雪光", "张三", "张四", "张安"};
+        int n = xs.length;
+        final CollatorHelper<String> helper = new CollatorHelper<String>("test");
+        QuickSort_DualPivot<String> sorter = new QuickSort_DualPivot<>(helper);
+        String[] res = sorter.sort(xs);
+        System.out.println(Arrays.asList(res));
     }
 
     private static String[] setupWords(final int n) {

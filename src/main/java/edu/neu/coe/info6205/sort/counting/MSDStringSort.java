@@ -18,6 +18,10 @@ public class MSDStringSort {
         sort(a, 0, n, 0);
     }
 
+    public static String[] preProcess(String[] a) {
+        return a;
+    }
+
     /**
      * Sort from a[lo] to a[hi] (exclusive), ignoring the first d characters of each String.
      * This method is recursive.

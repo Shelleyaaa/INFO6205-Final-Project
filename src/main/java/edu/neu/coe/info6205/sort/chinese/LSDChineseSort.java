@@ -88,4 +88,8 @@ public class LSDChineseSort {
         sort(strArr, 0, strArr.length - 1);
     }
 
+    public String[] preProcess(String[] a) {
+        return a;
+    }
+
 }

@@ -84,4 +84,8 @@ public class LSDStringSort {
     public void sort(String[] strArr) {
         sort(strArr, 0, strArr.length - 1);
     }
+
+    public String[] preProcess(String[] a) {
+        return a;
+    }
 }

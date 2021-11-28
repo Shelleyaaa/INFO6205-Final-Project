@@ -1,4 +1,5 @@
 package edu.neu.coe.info6205.sort.chinese;
+
 import edu.neu.coe.info6205.sort.BaseHelper;
 import edu.neu.coe.info6205.sort.Helper;
 import org.junit.Test;
@@ -6,7 +7,6 @@ import org.junit.Test;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -32,7 +32,7 @@ public class TimChineseSortTest {
         int n = 200;
         final Helper<String> helper = new BaseHelper<>("test", n, 1L);
         helper.init(n);
-        String[] words = getWords("chinese-words-test.txt", QuickSortChineseDualPivotTest::lineAsList);
+        String[] words = getWords("chinese-words-test.txt", TimChineseSortTest::lineAsList);
         final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
         assertEquals(n, xs.length);
         TimChineseSort.sort(xs);
@@ -59,7 +59,7 @@ public class TimChineseSortTest {
      */
     static String[] getWords(final String resource, final Function<String, List<String>> stringListFunction) {
         try {
-            final File file = new File(getPathname(resource, QuickSortChineseDualPivotTest.class));
+            final File file = new File(getPathname(resource, TimChineseSortTest.class));
             final String[] result = getWordArray(file, stringListFunction, 2);
             System.out.println("getWords: testing with " + formatWhole(result.length) + " unique words: from " + file);
             return result;
