@@ -5,7 +5,6 @@ import com.ibm.icu.util.ULocale;
 import edu.neu.coe.info6205.sort.CollatorHelper;
 import edu.neu.coe.info6205.sort.huskySortUtils.Coding;
 import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoder;
-import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory;
 import edu.neu.coe.info6205.sort.simple.InsertionSort;
 import edu.neu.coe.info6205.util.LazyLogger;
 
@@ -21,7 +20,7 @@ public class PureHuskyChineseSort<X extends Comparable<X>> {
     /**
      * The main sort method.
      *
-     * @param xs the array to be sorted.
+     * @param arr the array to be sorted.
      */
     public X[] sort(final X[] arr) {
         X[] xs = preProcess(arr);
@@ -31,7 +30,6 @@ public class PureHuskyChineseSort<X extends Comparable<X>> {
         // NOTE: First pass where we code to longs and sort according to those.
         final Coding coding = huskyCoder.huskyEncode(xs);
         final long[] longs = coding.longs;
-        for(long a:longs)
         introSort(xs, longs, 0, longs.length, 2 * floor_lg(xs.length));
 
         // NOTE: Second pass (if required) to fix any remaining inversions.

@@ -23,8 +23,8 @@ public class MSDChineseSortTest {
 
     @Test
     public void sort() {
-        MSDChineseSort.sort(input);
-        assertArrayEquals(expected, input);
+        String[] res = MSDChineseSort.sort(input);
+        assertArrayEquals(expected, res);
     }
 
     @Test
@@ -35,16 +35,16 @@ public class MSDChineseSortTest {
         String[] words = getWords("chinese-words-test.txt", MSDChineseSortTest::lineAsList);
         final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
         assertEquals(n, xs.length);
-        MSDChineseSort.sort(xs);
-        assertEquals("曹玉德", xs[0]);
-        assertEquals("张四", xs[199]);
+        String[] res = MSDChineseSort.sort(xs);
+        assertEquals("曹玉德", res[0]);
+        assertEquals("张四", res[199]);
     }
 
     @Test
     public void sort2() {
         String[] words = getWords("shuffledChinese.txt", MSDChineseSortTest::lineAsList);
-        MSDChineseSort.sort(words);
-        assertEquals("阿安", words[0]);
+        String[] res = MSDChineseSort.sort(words);
+        assertEquals("阿安", res[0]);
     }
 
     /**

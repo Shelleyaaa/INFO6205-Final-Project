@@ -3,6 +3,7 @@ package edu.neu.coe.info6205.sort.chinese;
 import com.ibm.icu.text.Collator;
 import edu.neu.coe.info6205.sort.simple.InsertionSortMSD;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -17,14 +18,21 @@ public class MSDChineseSort {
      *
      * @param a the array to be sorted.
      */
-    public static void sort(String[] a) {
-        int n = a.length;
+    public static String[] sort(String[] a) {
+        String[] copy = preProcess(a);
+        int n = copy.length;
         aux = new String[n];
-        sort(a, 0, n, 0);
+        sort(copy, 0, n, 0);
+        postProcess(a);
+        return copy;
     }
 
-    public static String[] preProcess(String[] a) {
-        return a;
+    public static String[] preProcess(String[] xs) {
+        return Arrays.copyOf(xs, xs.length);
+    }
+
+    public static String[] postProcess(String[] xs){
+        return xs;
     }
 
     /**

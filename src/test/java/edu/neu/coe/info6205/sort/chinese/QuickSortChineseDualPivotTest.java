@@ -23,8 +23,8 @@ public class QuickSortChineseDualPivotTest {
 
     @Test
     public void sort() {
-        QuickSortChinese_DualPivot.sort(input);
-        assertArrayEquals(expected, input);
+        String[] res = QuickSortChinese_DualPivot.sort(input);
+        assertArrayEquals(expected, res);
     }
 
     @Test
@@ -35,9 +35,9 @@ public class QuickSortChineseDualPivotTest {
         String[] words = getWords("chinese-words-test.txt", QuickSortChineseDualPivotTest::lineAsList);
         final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
         assertEquals(n, xs.length);
-        QuickSortChinese_DualPivot.sort(xs);
-        assertEquals("曹玉德", xs[0]);
-        assertEquals("张四", xs[199]);
+        String[] res = QuickSortChinese_DualPivot.sort(xs);
+        assertEquals("曹玉德", res[0]);
+        assertEquals("张四", res[199]);
     }
 
     /**

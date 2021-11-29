@@ -1,7 +1,6 @@
 package edu.neu.coe.info6205.sort.chinese;
 
 import edu.neu.coe.info6205.sort.BaseHelper;
-import edu.neu.coe.info6205.sort.CollatorHelper;
 import edu.neu.coe.info6205.sort.Helper;
 import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory;
 import org.junit.Test;
@@ -13,10 +12,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class PureHuskyChineseSortTest {
-    private final CollatorHelper<String> helper = new CollatorHelper<>("Chinese Helper");
 
     String[] input = new String[]{"刘持平", "洪文胜", "樊辉辉", "苏会敏", "高民政", "曹玉德", "袁继鹏",
             "舒冬梅", "杨腊香", "许凤山", "王广风", "黄锡鸿", "罗庆富", "顾芳芳", "宋雪光", "张三", "张四", "张安"};
@@ -33,24 +32,18 @@ public class PureHuskyChineseSortTest {
     @Test
     public void testSort() {
         PureHuskyChineseSort<String> sorter = new PureHuskyChineseSort<>(HuskyCoderFactory.unicodeChineseCoder, false, false);
-        String[] chinese = new String[]{"张安安", "张安三", "张安安安","张安安三","张三","张四","张安"};
-        String[] after = new String[]{"张安" ,"张安安", "张安安安" ,"张安安三", "张安三", "张三" ,"张四"};
-        String[] result =sorter.sort(chinese);
+        String[] chinese = new String[]{"张安安", "张安三", "张安安安", "张安安三", "张三", "张四", "张安"};
+        String[] after = new String[]{"张安", "张安安", "张安安安", "张安安三", "张安三", "张三", "张四"};
+        String[] result = sorter.sort(chinese);
         assertArrayEquals(after, result);
     }
 
     @Test
     public void sort() {
-        int n = 200;
-        final Helper<String> helper = new BaseHelper<>("test", n, 1L);
-        helper.init(n);
-        String[] words = getWords("chinese-words-test.txt", PureHuskyChineseSortTest::lineAsList);
-        final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
-        assertEquals(n, xs.length);
+        String[] words = getWords("shuffledChinese.txt", PureHuskyChineseSortTest::lineAsList);
         PureHuskyChineseSort<String> sorter = new PureHuskyChineseSort<>(HuskyCoderFactory.unicodeChineseCoder, false, true);
-        String[] result =sorter.sort(xs);
-        assertEquals("曹玉德", result[0]);
-        assertEquals("袁继鹏", result[160]);
+        String[] result = sorter.sort(words);
+        assertEquals("阿安", result[0]);
     }
 
     @Test

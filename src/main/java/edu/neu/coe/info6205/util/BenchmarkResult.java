@@ -4,7 +4,9 @@ import edu.neu.coe.info6205.sort.CollatorHelper;
 import edu.neu.coe.info6205.sort.Helper;
 import edu.neu.coe.info6205.sort.chinese.LSDChineseSort;
 import edu.neu.coe.info6205.sort.chinese.MSDChineseSort;
+import edu.neu.coe.info6205.sort.chinese.PureHuskyChineseSort;
 import edu.neu.coe.info6205.sort.chinese.TimChineseSort;
+import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory;
 import edu.neu.coe.info6205.sort.simple.QuickSort;
 import edu.neu.coe.info6205.sort.simple.QuickSort_DualPivot;
 
@@ -59,6 +61,14 @@ public class BenchmarkResult {
                     "Chinese Tim sort", TimChineseSort::preProcess,
                     TimChineseSort::sort);
             times = bm3.run(xs, 5);
+            System.out.println("when n is " + 5 + ", run time is " + times);
+
+            PureHuskyChineseSort<String> huskyChineseSort = new PureHuskyChineseSort<>(HuskyCoderFactory.unicodeCoder,
+                    false, false);
+            Benchmark<String[]> bm4 = new Benchmark<>(
+                    "Chinese husky sort", huskyChineseSort::preProcess,
+                    huskyChineseSort::sort);
+            times = bm4.run(xs, 5);
             System.out.println("when n is " + 5 + ", run time is " + times);
         }
     }

@@ -23,8 +23,8 @@ public class TimChineseSortTest {
 
     @Test
     public void sort() {
-        TimChineseSort.sort(input);
-        assertArrayEquals(expected, input);
+        String[] res = TimChineseSort.sort(input);
+        assertArrayEquals(expected, res);
     }
 
     @Test
@@ -35,9 +35,15 @@ public class TimChineseSortTest {
         String[] words = getWords("chinese-words-test.txt", TimChineseSortTest::lineAsList);
         final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
         assertEquals(n, xs.length);
-        TimChineseSort.sort(xs);
-        assertEquals("曹玉德", xs[0]);
-        assertEquals("张四", xs[199]);
+        String[] res = TimChineseSort.sort(xs);
+        assertEquals("曹玉德", res[0]);
+        assertEquals("张四", res[199]);
+    }
+
+    @Test
+    public void preProcessTest() {
+        String[] res = TimChineseSort.preProcess(input);
+        assertArrayEquals(res, input);
     }
 
     /**

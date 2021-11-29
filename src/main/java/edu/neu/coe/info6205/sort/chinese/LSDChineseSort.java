@@ -2,6 +2,7 @@ package edu.neu.coe.info6205.sort.chinese;
 
 import com.ibm.icu.text.Collator;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 public class LSDChineseSort {
@@ -84,12 +85,18 @@ public class LSDChineseSort {
      *
      * @param strArr It contains an array of String on which LSD sort needs to be performed
      */
-    public void sort(String[] strArr) {
-        sort(strArr, 0, strArr.length - 1);
+    public String[] sort(String[] strArr) {
+        String[] copy = preProcess(strArr);
+        sort(copy, 0, copy.length - 1);
+        postProcess(strArr);
+        return copy;
     }
 
-    public String[] preProcess(String[] a) {
-        return a;
+    public String[] preProcess(String[] xs) {
+        return Arrays.copyOf(xs, xs.length);
     }
 
+    public String[] postProcess(String[] xs){
+        return xs;
+    }
 }
