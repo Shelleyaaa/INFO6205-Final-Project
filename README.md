@@ -9,3 +9,5 @@
 4. unit test includes java files in package "edu.neu.coe.info6205.sort.chinese", CollatorHelperTest.java(edu.neu.coe.info6205.sort) and BenchmarkResultTest.java(edu.neu.coe.info6205.util)
 
 5. modify the HuskyCoderFactory.java and add Chinese husky sort method
+
+6. GetWordsUtil.java is extracted from MSDStringSortTest.java from original repository and aim to get contents from files.
