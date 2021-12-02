@@ -28,7 +28,8 @@ public class BenchmarkResult {
         for (int i = 250000; i <= 4000000; i *= 2) {
             Helper<String> helper = new CollatorHelper<>("Chinese Helper", i);
             QuickSort<String> sorter = new QuickSort_DualPivot<>(helper);
-            String[] words = getWords("shuffledChinese.txt", BenchmarkResult::lineAsList);
+            String[] words = GetWordsUtil.getWords("/shuffledChinese.txt",
+                    GetWordsUtil::lineAsList, BenchmarkResult.class);
             String[] xs;
             if (i < 1000000) {
                 xs = Arrays.copyOfRange(words, 0, i);
@@ -71,62 +72,6 @@ public class BenchmarkResult {
             times = bm4.run(xs, 5);
             System.out.println("when n is " + 5 + ", run time is " + times);
         }
-    }
-
-    static String[] getWords(final String resource, final Function<String, List<String>> stringListFunction) {
-        try {
-            final File file = new File(getPathname(resource, BenchmarkResult.class));
-            final String[] result = getWordArray(file, stringListFunction, 2);
-            System.out.println("getWords: testing with " + formatWhole(result.length) + " unique words: from " + file);
-            return result;
-        } catch (final FileNotFoundException e) {
-            System.out.println("Cannot find resource: " + resource);
-            return new String[0];
-        }
-    }
-
-    private static List<String> getWordList(final FileReader fr, final Function<String,
-            List<String>> stringListFunction, final int minLength) {
-        final List<String> words = new ArrayList<>();
-        for (final Object line : new BufferedReader(fr).lines().toArray())
-            words.addAll(stringListFunction.apply((String) line));
-        return words.stream().distinct().filter(s -> s.length() >= minLength).collect(Collectors.toList());
-    }
-
-
-    /**
-     * Method to read given file and return a String[] of its content.
-     *
-     * @param file               the file to read.
-     * @param stringListFunction a function which takes a String and splits into a List of Strings.
-     * @param minLength          the minimum acceptable length for a word.
-     * @return an array of Strings.
-     */
-    static String[] getWordArray(final File file, final Function<String, List<String>> stringListFunction,
-                                 final int minLength) {
-        try (final FileReader fr = new FileReader(file)) {
-            return getWordList(fr, stringListFunction, minLength).toArray(new String[0]);
-        } catch (final IOException e) {
-            System.out.println("Cannot open file: " + file);
-            return new String[0];
-        }
-    }
-
-    static List<String> lineAsList(final String line) {
-        final List<String> words = new ArrayList<>();
-        words.add(line);
-        return words;
-    }
-
-    private static String getPathname(final String resource, @SuppressWarnings("SameParameterValue") final Class<?> clazz)
-            throws FileNotFoundException {
-        final URL url = clazz.getClassLoader().getResource(resource);
-        if (url != null) return url.getPath();
-        throw new FileNotFoundException(resource + " in " + clazz);
-    }
-
-    public static String formatWhole(final int x) {
-        return String.format("%,d", x);
     }
 
     private static String[] extendArray(String[] a, int size) {
