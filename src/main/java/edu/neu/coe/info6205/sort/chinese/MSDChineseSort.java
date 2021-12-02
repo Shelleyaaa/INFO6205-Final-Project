@@ -23,16 +23,11 @@ public class MSDChineseSort {
         int n = copy.length;
         aux = new String[n];
         sort(copy, 0, n, 0);
-        postProcess(a);
         return copy;
     }
 
     public static String[] preProcess(String[] xs) {
         return Arrays.copyOf(xs, xs.length);
-    }
-
-    public static String[] postProcess(String[] xs){
-        return xs;
     }
 
     /**
@@ -81,6 +76,6 @@ public class MSDChineseSort {
 
     private static final int radix = 65281;
     private static final int cutoff = 16;
-    private static String[] aux;       // auxiliary array for distribution
+    private static String[] aux;
 
 }

@@ -7,11 +7,10 @@ import java.util.Locale;
 
 public class TimChineseSort {
 
-    public static String[] sort(String[] xs){
+    public static String[] sort(String[] xs) {
         Collator collator = Collator.getInstance(Locale.CHINA);
         String[] copy = preProcess(xs);
         Arrays.sort(copy, collator::compare);
-        postProcess(xs);
         return copy;
     }
 
@@ -19,7 +18,4 @@ public class TimChineseSort {
         return Arrays.copyOf(xs, xs.length);
     }
 
-    public static String[] postProcess(String[] xs){
-        return xs;
-    }
 }

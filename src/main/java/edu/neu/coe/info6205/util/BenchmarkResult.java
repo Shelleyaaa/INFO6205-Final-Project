@@ -10,13 +10,7 @@ import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory;
 import edu.neu.coe.info6205.sort.simple.QuickSort;
 import edu.neu.coe.info6205.sort.simple.QuickSort_DualPivot;
 
-import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class BenchmarkResult {
 
@@ -74,7 +68,7 @@ public class BenchmarkResult {
         }
     }
 
-    private static String[] extendArray(String[] a, int size) {
+    public static String[] extendArray(String[] a, int size) {
         String[] b = new String[a.length * size];
         int j = 0;
         while (j < size) {

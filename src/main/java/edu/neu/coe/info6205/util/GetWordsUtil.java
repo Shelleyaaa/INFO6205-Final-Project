@@ -1,9 +1,6 @@
 package edu.neu.coe.info6205.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +27,8 @@ public class GetWordsUtil {
      * @param stringListFunction a function which takes a String and splits into a List of Strings.
      * @return an array of Strings.
      */
-    static String[] getWords(final String resource, final Function<String, List<String>> stringListFunction, Class<?> clazz) {
+    public static String[] getWords(final String resource, final Function<String, List<String>> stringListFunction,
+                                    Class<?> clazz) {
         try {
             final File file = new File(Objects.requireNonNull(clazz.getResource(resource)).toURI());
             final String[] result = getWordArray(file, stringListFunction, 2);
@@ -42,7 +40,21 @@ public class GetWordsUtil {
         }
     }
 
-    private static List<String> getWordList(final FileReader fr, final Function<String, List<String>> stringListFunction, final int minLength) {
+    public static void writeWords(String[] words, String fileName) {
+        try {
+            FileWriter fw = new FileWriter(fileName);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (String word : words) {
+                bw.write(word + "\n");
+            }
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static List<String> getWordList(final FileReader fr, final Function<String,
+            List<String>> stringListFunction, final int minLength) {
         final List<String> words = new ArrayList<>();
         for (final Object line : new BufferedReader(fr).lines().toArray())
             words.addAll(stringListFunction.apply((String) line));
@@ -58,7 +70,8 @@ public class GetWordsUtil {
      * @param minLength          the minimum acceptable length for a word.
      * @return an array of Strings.
      */
-    static String[] getWordArray(final File file, final Function<String, List<String>> stringListFunction, final int minLength) {
+    public static String[] getWordArray(final File file, final Function<String, List<String>> stringListFunction,
+                                        final int minLength) {
         try (final FileReader fr = new FileReader(file)) {
             return getWordList(fr, stringListFunction, minLength).toArray(new String[0]);
         } catch (final IOException e) {
@@ -67,7 +80,7 @@ public class GetWordsUtil {
         }
     }
 
-    static List<String> lineAsList(final String line) {
+    public static List<String> lineAsList(final String line) {
         final List<String> words = new ArrayList<>();
         words.add(line);
         return words;

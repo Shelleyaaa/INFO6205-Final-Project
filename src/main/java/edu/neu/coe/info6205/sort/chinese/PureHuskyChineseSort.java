@@ -6,15 +6,14 @@ import edu.neu.coe.info6205.sort.CollatorHelper;
 import edu.neu.coe.info6205.sort.huskySortUtils.Coding;
 import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoder;
 import edu.neu.coe.info6205.sort.simple.InsertionSort;
-import edu.neu.coe.info6205.util.LazyLogger;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 
 import static java.util.Arrays.binarySearch;
 
 public class PureHuskyChineseSort<X extends Comparable<X>> {
+
     CollatorHelper<X> helper = new CollatorHelper<>("Chinese Helper");
 
     /**
@@ -34,30 +33,21 @@ public class PureHuskyChineseSort<X extends Comparable<X>> {
 
         // NOTE: Second pass (if required) to fix any remaining inversions.
         if (coding.perfect) {
-            postProcess(arr);
             return xs;
         }
         if (useInsertionSort)
-            new InsertionSort<X>(helper).mutatingSort(xs);
-        else{
+            new InsertionSort<>(helper).mutatingSort(xs);
+        else {
             Collator collator = Collator.getInstance(ULocale.CHINA);
-            Arrays.sort(xs, new Comparator<X>() {
-                @Override
-                public int compare(X o1, X o2) {
-                    return collator.compare(o1, o2);
-                }
-            });
+            Arrays.sort(xs, collator);
         }
-        postProcess(arr);
         return xs;
     }
 
-    public  X[] preProcess(X[] xs){
-        return Arrays.copyOf(xs,xs.length);
+    public X[] preProcess(X[] xs) {
+        return Arrays.copyOf(xs, xs.length);
     }
-    public  X[] postProcess(X[] xs){
-        return xs;
-    }
+
     /**
      * Primary constructor.
      *
@@ -207,20 +197,10 @@ public class PureHuskyChineseSort<X extends Comparable<X>> {
         }
     }
 
-    private HuskyCoder<X> getHuskyCoder() {
-        return huskyCoder;
-    }
-
-    // NOTE that we keep this false because, for the size of arrays that we need to sort via insertion sort,
-    // This optimization doesn't really help.
-    // That might be because (a) arrays are short and (b) the binary search will likely take quite a bit longer than
-    // necessary when the array is already close to being in order (since binary search starts in the middle).
-    // It would be like looking up aardvark in the dictionary using strict binary search.
     private static final boolean OPTIMIZED = false;
 
     private final HuskyCoder<X> huskyCoder;
     private final boolean mayBeSorted;
     private final boolean useInsertionSort;
 
-    private final static LazyLogger logger = new LazyLogger(PureHuskyChineseSort.class);
 }

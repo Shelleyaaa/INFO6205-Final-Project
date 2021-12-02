@@ -88,7 +88,6 @@ public class LSDChineseSort {
     public String[] sort(String[] strArr) {
         String[] copy = preProcess(strArr);
         sort(copy, 0, copy.length - 1);
-        postProcess(strArr);
         return copy;
     }
 
@@ -96,7 +95,4 @@ public class LSDChineseSort {
         return Arrays.copyOf(xs, xs.length);
     }
 
-    public String[] postProcess(String[] xs){
-        return xs;
-    }
 }

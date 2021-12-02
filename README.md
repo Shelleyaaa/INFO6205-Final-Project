@@ -6,6 +6,6 @@
 
 3. Add CollatorHelper.java (in package "edu.neu.coe.info6205.sort") to sort Chinese
 
-4. unit test includes java files in package "edu.neu.coe.info6205.sort.chinese" and CollatorHelperTest.java
+4. unit test includes java files in package "edu.neu.coe.info6205.sort.chinese", CollatorHelperTest.java(edu.neu.coe.info6205.sort) and BenchmarkResultTest.java(edu.neu.coe.info6205.util)
 
 5. modify the HuskyCoderFactory.java and add Chinese husky sort method

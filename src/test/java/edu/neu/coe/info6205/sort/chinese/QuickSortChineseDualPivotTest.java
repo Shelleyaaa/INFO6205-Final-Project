@@ -1,15 +1,15 @@
 package edu.neu.coe.info6205.sort.chinese;
 
 import edu.neu.coe.info6205.sort.BaseHelper;
+import edu.neu.coe.info6205.sort.CollatorHelper;
 import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.sort.simple.Partition;
+import edu.neu.coe.info6205.sort.simple.Partitioner;
+import edu.neu.coe.info6205.sort.simple.QuickSort_DualPivot;
+import edu.neu.coe.info6205.util.GetWordsUtil;
 import org.junit.Test;
 
-import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -32,7 +32,8 @@ public class QuickSortChineseDualPivotTest {
         int n = 200;
         final Helper<String> helper = new BaseHelper<>("test", n, 1L);
         helper.init(n);
-        String[] words = getWords("chinese-words-test.txt", QuickSortChineseDualPivotTest::lineAsList);
+        String[] words = GetWordsUtil.getWords("/chinese-words-test.txt", GetWordsUtil::lineAsList,
+                QuickSortChineseDualPivotTest.class);
         final String[] xs = helper.random(String.class, r -> words[r.nextInt(words.length)]);
         assertEquals(n, xs.length);
         String[] res = QuickSortChinese_DualPivot.sort(xs);
@@ -40,73 +41,20 @@ public class QuickSortChineseDualPivotTest {
         assertEquals("张四", res[199]);
     }
 
-    /**
-     * Create a string representing an integer, with commas to separate thousands.
-     *
-     * @param x the integer.
-     * @return a String representing the number with commas.
-     */
-    public static String formatWhole(final int x) {
-        return String.format("%,d", x);
+    @Test
+    public void testSortWithChinesePartition() {
+        int n = input.length;
+        final CollatorHelper<String> helper = new CollatorHelper<>("test");
+        QuickSort_DualPivot<String> sorter = new QuickSort_DualPivot<>(helper);
+        Partitioner<String> partitioner = sorter.createPartitioner();
+        List<Partition<String>> partitions = partitioner.partition(new Partition<>(input, 0, input.length));
+        Partition<String> p0 = partitions.get(0);
+        sorter.sort(input, 0, p0.to, 0);
+        Partition<String> p1 = partitions.get(1);
+        sorter.sort(input, p1.from, p1.to, 0);
+        Partition<String> p2 = partitions.get(2);
+        sorter.sort(input, p2.from, n, 0);
+        assertArrayEquals(expected, input);
     }
 
-    /**
-     * Method to open a resource relative to this class and from the corresponding File, get an array of Strings.
-     *
-     * @param resource           the URL of the resource containing the Strings required.
-     * @param stringListFunction a function which takes a String and splits into a List of Strings.
-     * @return an array of Strings.
-     */
-    static String[] getWords(final String resource, final Function<String, List<String>> stringListFunction) {
-        try {
-            final File file = new File(getPathname(resource, QuickSortChineseDualPivotTest.class));
-            final String[] result = getWordArray(file, stringListFunction, 2);
-            System.out.println("getWords: testing with " + formatWhole(result.length) + " unique words: from " + file);
-            return result;
-        } catch (final FileNotFoundException e) {
-            System.out.println("Cannot find resource: " + resource);
-            return new String[0];
-        }
-    }
-
-    private static List<String> getWordList(final FileReader fr, final Function<String,
-            List<String>> stringListFunction, final int minLength) {
-        final List<String> words = new ArrayList<>();
-        for (final Object line : new BufferedReader(fr).lines().toArray())
-            words.addAll(stringListFunction.apply((String) line));
-        return words.stream().distinct().filter(s -> s.length() >= minLength).collect(Collectors.toList());
-    }
-
-
-    /**
-     * Method to read given file and return a String[] of its content.
-     *
-     * @param file               the file to read.
-     * @param stringListFunction a function which takes a String and splits into a List of Strings.
-     * @param minLength          the minimum acceptable length for a word.
-     * @return an array of Strings.
-     */
-    static String[] getWordArray(final File file, final Function<String, List<String>> stringListFunction,
-                                 final int minLength) {
-        try (final FileReader fr = new FileReader(file)) {
-            return getWordList(fr, stringListFunction, minLength).toArray(new String[0]);
-        } catch (final IOException e) {
-            System.out.println("Cannot open file: " + file);
-            return new String[0];
-        }
-    }
-
-    static List<String> lineAsList(final String line) {
-        final List<String> words = new ArrayList<>();
-        words.add(line);
-        return words;
-    }
-
-    private static String getPathname(final String resource,
-                                      @SuppressWarnings("SameParameterValue") final Class<?> clazz)
-            throws FileNotFoundException {
-        final URL url = clazz.getClassLoader().getResource(resource);
-        if (url != null) return url.getPath();
-        throw new FileNotFoundException(resource + " in " + clazz);
-    }
 }
