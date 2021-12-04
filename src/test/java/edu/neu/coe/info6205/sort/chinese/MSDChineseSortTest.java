@@ -6,6 +6,7 @@ import edu.neu.coe.info6205.util.GetWordsUtil;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -42,8 +43,9 @@ public class MSDChineseSortTest {
         String[] words = GetWordsUtil.getWords("/shuffledChinese.txt", GetWordsUtil::lineAsList,
                 MSDChineseSortTest.class);
         String[] res = MSDChineseSort.sort(words);
-        GetWordsUtil.writeWords(res, String.join(File.separator, "src", "main", "resources",
-                "sortedChineseWords.txt"));
+        String[] sorted = Arrays.copyOfRange(res, 0, 2000);
+        GetWordsUtil.writeWords(sorted, String.join(File.separator, "src", "main", "resources",
+                "sortedChineseWords-first-2000.txt"));
         assertEquals("阿安", res[0]);
     }
 

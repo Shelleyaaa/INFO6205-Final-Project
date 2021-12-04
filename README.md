@@ -11,3 +11,5 @@
 5. modify the HuskyCoderFactory.java and add Chinese husky sort method
 
 6. GetWordsUtil.java is extracted from MSDStringSortTest.java from original repository and aim to get contents from files.
+
+7. sortedChineseWords-first-2000.txt in the resources directory is the first 2000 words of MSD sort for Chinese words result.
