@@ -43,9 +43,9 @@ public class MSDChineseSortTest {
         String[] words = GetWordsUtil.getWords("/shuffledChinese.txt", GetWordsUtil::lineAsList,
                 MSDChineseSortTest.class);
         String[] res = MSDChineseSort.sort(words);
-        String[] sorted = Arrays.copyOfRange(res, 0, 2000);
+        String[] sorted = Arrays.copyOfRange(res, 0, 1000);
         GetWordsUtil.writeWords(sorted, String.join(File.separator, "src", "main", "resources",
-                "sortedChineseWords-first-2000.txt"));
+                "MSD-sortedChineseWords-first-1000.txt"));
         assertEquals("阿安", res[0]);
     }
 

@@ -5,6 +5,9 @@ import edu.neu.coe.info6205.sort.Helper;
 import edu.neu.coe.info6205.util.GetWordsUtil;
 import org.junit.Test;
 
+import java.io.File;
+import java.util.Arrays;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -35,6 +38,18 @@ public class LSDChineseSortTest {
         String[] res = lsd.sort(xs);
         assertEquals("曹玉德", res[0]);
         assertEquals("张四", res[99]);
+    }
+
+    @Test
+    public void sort2() {
+        String[] words = GetWordsUtil.getWords("/shuffledChinese.txt", GetWordsUtil::lineAsList,
+                LSDChineseSortTest.class);
+        LSDChineseSort lsd = new LSDChineseSort();
+        String[] res = lsd.sort(words);
+        String[] sorted = Arrays.copyOfRange(res, 0, 1000);
+        GetWordsUtil.writeWords(sorted, String.join(File.separator, "src", "main", "resources",
+                "LSD-sortedChineseWords-first-1000.txt"));
+        assertEquals("阿安", res[0]);
     }
 
     @Test
