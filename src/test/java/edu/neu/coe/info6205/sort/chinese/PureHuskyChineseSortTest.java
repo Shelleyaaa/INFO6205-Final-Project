@@ -6,6 +6,9 @@ import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory;
 import edu.neu.coe.info6205.util.GetWordsUtil;
 import org.junit.Test;
 
+import java.io.File;
+import java.util.Arrays;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -58,6 +61,19 @@ public class PureHuskyChineseSortTest {
         String[] result = sorter.sort(xs);
         assertEquals("曹玉德", result[0]);
         assertEquals("张四", result[199]);
+    }
+
+    @Test
+    public void sort2() {
+        String[] words = GetWordsUtil.getWords("/shuffledChinese.txt", GetWordsUtil::lineAsList,
+                PureHuskyChineseSortTest.class);
+        PureHuskyChineseSort<String> sorter = new PureHuskyChineseSort<>(HuskyCoderFactory.unicodeChineseCoder,
+                false, true);
+        String[] res = sorter.sort(words);
+        String[] sorted = Arrays.copyOfRange(res, 0, 1000);
+        GetWordsUtil.writeWords(sorted, String.join(File.separator, "src", "main", "resources",
+                "Husky-sortedChineseWords-first-1000.txt"));
+        assertEquals("阿安", res[0]);
     }
 
     @Test
