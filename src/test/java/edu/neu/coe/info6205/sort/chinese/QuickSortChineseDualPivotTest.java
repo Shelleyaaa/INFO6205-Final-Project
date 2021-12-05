@@ -9,6 +9,8 @@ import edu.neu.coe.info6205.sort.simple.QuickSort_DualPivot;
 import edu.neu.coe.info6205.util.GetWordsUtil;
 import org.junit.Test;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -39,6 +41,17 @@ public class QuickSortChineseDualPivotTest {
         String[] res = QuickSortChinese_DualPivot.sort(xs);
         assertEquals("曹玉德", res[0]);
         assertEquals("张四", res[199]);
+    }
+
+    @Test
+    public void sort2() {
+        String[] words = GetWordsUtil.getWords("/shuffledChinese.txt", GetWordsUtil::lineAsList,
+                QuickSortChineseDualPivotTest.class);
+        String[] res = QuickSortChinese_DualPivot.sort(words);
+        String[] sorted = Arrays.copyOfRange(res, 0, 1000);
+        GetWordsUtil.writeWords(sorted, String.join(File.separator, "src", "main", "resources",
+                "Quick-sortedChineseWords-first-1000.txt"));
+        assertEquals("阿安", res[0]);
     }
 
     @Test
